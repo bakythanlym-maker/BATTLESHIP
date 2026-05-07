@@ -96,16 +96,20 @@ const GamePage: React.FC = () => {
 
       {/* Post-Game Modal */}
       {gameState.status === 'finished' && (
-        <div className="victory-overlay z-[60]">
-          <div className="relative w-full max-w-md slide-up">
+        <>
+          {/* Emergency Top Return Button */}
+          <div className="fixed top-80 left-1/2 -translate-x-1/2 z-[10000] animate-bounce">
             <button
               onClick={() => { resetGame(); setPhase('difficulty'); playBtn(); }}
               onMouseEnter={() => playHover()}
-              className="absolute -top-14 left-0 px-4 py-2 bg-navy-900/40 border border-cyan-500/20 rounded-lg text-[10px] font-orbitron text-cyan-400 hover:text-white hover:border-cyan-400 uppercase tracking-[0.3em] transition-all flex items-center gap-3 backdrop-blur-sm group z-10"
+              className="bg-cyan-500 text-navy-950 font-orbitron px-8 py-3 rounded-full shadow-[0_0_30px_rgba(0,255,242,0.5)] hover:scale-105 transition-all uppercase tracking-[0.2em] text-xs font-bold flex items-center gap-3 border-2 border-white/20"
             >
-              <span className="text-sm group-hover:-translate-x-1 transition-transform">←</span> Return to HQ
+              <span className="text-lg">🏠</span> Return to Headquarters
             </button>
-            <div className="glass-card-strong p-10 text-center w-full relative">
+          </div>
+
+          <div className="victory-overlay">
+            <div className="glass-card-strong p-10 text-center max-w-md w-full slide-up">
               <div className="text-6xl mb-4">{humanWon ? '🏆' : '💀'}</div>
               <h2 className={`font-orbitron text-4xl mb-2 ${humanWon ? 'text-neon-gold' : 'text-red-fire'}`}>
                 {humanWon ? 'VICTORY' : 'DEFEATED'}
@@ -134,16 +138,16 @@ const GamePage: React.FC = () => {
               <div className="space-y-4">
                 <button onClick={handlePlayAgain} className="btn-gold w-full py-4">New Mission</button>
                 <button
-                  onClick={() => { setPhase('leaderboard'); playBtn(); }}
+                  onClick={() => { setPhase('difficulty'); resetGame(); playBtn(); }}
                   onMouseEnter={() => playHover()}
                   className="btn-secondary w-full"
                 >
-                  View Global Rankings
+                  Return to HQ
                 </button>
               </div>
             </div>
           </div>
-        </div>
+        </>
       )}
 
       {/* Orientation Guide for Mobile */}

@@ -587,3 +587,29 @@ body {
     padding: 1rem !important;
   }
 }
+/* ── Victory Overlay ── */
+.victory-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(2, 6, 23, 0.9);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.glass-card-strong {
+  background: linear-gradient(135deg, rgba(13, 25, 48, 0.95) 0%, rgba(7, 15, 31, 0.98) 100%);
+  border: 1px solid rgba(0, 255, 242, 0.2);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 255, 242, 0.05);
+  border-radius: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.victory-overlay h2 {
+  text-shadow: 0 0 20px currentColor;
+}

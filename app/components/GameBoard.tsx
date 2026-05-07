@@ -101,21 +101,22 @@ const GameBoard: React.FC<GameBoardProps> = ({ onAbort }) => {
         </div>
 
         {/* Center: Combat Log & Intel */}
-        <div className="flex flex-col gap-6 h-full max-h-[400px] lg:max-h-[600px] order-2 relative">
-          <button
-            onClick={() => { onAbort(); playBtn(); }}
-            onMouseEnter={() => playHover()}
-            className={`absolute -top-16 left-0 z-[100] px-4 py-2 border rounded-lg text-[10px] font-orbitron uppercase tracking-[0.3em] transition-all flex items-center gap-3 backdrop-blur-sm group ${
-              gameState.status === 'finished' 
-                ? 'bg-navy-900/80 border-cyan-500/40 text-cyan-400 hover:text-white hover:border-cyan-400' 
-                : 'bg-navy-900/60 border-red-500/20 text-gray-400 hover:text-red-400 hover:border-red-500/50'
-            }`}
-          >
-            <span className="text-sm group-hover:-translate-x-1 transition-transform">←</span> 
-            {gameState.status === 'finished' ? 'Return to HQ' : 'Abort Mission'}
-          </button>
-          <div className="glass-card p-6 flex-grow flex flex-col border-navy-700 bg-navy-900/40">
-            <h4 className="font-orbitron text-[10px] text-gray-500 uppercase mb-4 tracking-widest border-b border-navy-700 pb-2">Combat Log</h4>
+        <div className="flex flex-col gap-6 h-full max-h-[400px] lg:max-h-[600px] order-2">
+          <div className="glass-card p-6 flex-grow flex flex-col border-navy-700 bg-navy-900/40 relative">
+            <div className="flex justify-between items-center mb-4 border-b border-navy-700 pb-2">
+              <h4 className="font-orbitron text-[10px] text-gray-500 uppercase tracking-widest">Combat Log</h4>
+              <button
+                onClick={() => { onAbort(); playBtn(); }}
+                onMouseEnter={() => playHover()}
+                className={`px-3 py-1 border rounded text-[9px] font-orbitron uppercase tracking-widest transition-all flex items-center gap-2 ${
+                  gameState.status === 'finished' 
+                    ? 'bg-cyan-500/10 border-cyan-500/40 text-cyan-400 hover:bg-cyan-500/20' 
+                    : 'bg-red-500/5 border-red-500/20 text-gray-500 hover:text-red-400 hover:border-red-500/40'
+                }`}
+              >
+                {gameState.status === 'finished' ? '← Return to HQ' : 'Abort Mission'}
+              </button>
+            </div>
             <div ref={logRef} className="flex-grow overflow-y-auto space-y-2 pr-2 custom-scrollbar">
               {gameState.moveHistory.length === 0 && (
                 <div className="text-xs text-gray-600 italic">No activity reported...</div>
