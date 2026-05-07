@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useGame } from '../context/GameContext';
+import { useSound } from '../context/SoundContext';
 import DifficultySelector from './DifficultySelector';
 import ShipPlacement from './ShipPlacement';
 import GameBoard from './GameBoard';
@@ -16,6 +17,7 @@ type Phase = 'difficulty' | 'placement' | 'playing' | 'leaderboard' | 'multiplay
 
 const GamePage: React.FC = () => {
   const { gameState, setDifficulty, setMode, resetGame, startGame, autoPlaceShips } = useGame();
+  const { playBtn, playHover } = useSound();
   const [phase, setPhase] = useState<Phase>('difficulty');
   const [isProModalOpen, setIsProModalOpen] = useState(false);
 
@@ -65,13 +67,7 @@ const GamePage: React.FC = () => {
 
         {phase === 'playing' && (
           <div className="relative">
-            <button
-              onClick={() => { resetGame(); setPhase('difficulty'); }}
-              className="fixed top-8 left-8 z-[100] px-4 py-2 bg-navy-900/60 border border-red-500/20 rounded-lg text-[10px] font-orbitron text-gray-400 hover:text-red-400 hover:border-red-500/50 uppercase tracking-[0.3em] transition-all flex items-center gap-3 group backdrop-blur-sm"
-            >
-              <span className="text-sm group-hover:-translate-x-1 transition-transform">←</span> Abort Mission
-            </button>
-            <GameBoard />
+            <GameBoard onAbort={() => { resetGame(); setPhase('difficulty'); }} />
           </div>
         )}
 
@@ -101,40 +97,50 @@ const GamePage: React.FC = () => {
       {/* Post-Game Modal */}
       {gameState.status === 'finished' && (
         <div className="victory-overlay z-[60]">
-          <div className="glass-card-strong p-10 text-center max-w-md w-full slide-up">
-            <div className="text-6xl mb-4">{humanWon ? '🏆' : '💀'}</div>
-            <h2 className={`font-orbitron text-4xl mb-2 ${humanWon ? 'text-neon-gold' : 'text-red-fire'}`}>
-              {humanWon ? 'VICTORY' : 'DEFEATED'}
-            </h2>
-            <p className="text-gray-400 text-sm mb-8">
-              {humanWon
-                ? 'The enemy fleet has been neutralized. Admiral, your strategy was flawless.'
-                : 'Your fleet has been annihilated. The enemy claims dominance over these waters.'}
-            </p>
+          <div className="relative w-full max-w-md slide-up">
+            <button
+              onClick={() => { resetGame(); setPhase('difficulty'); playBtn(); }}
+              onMouseEnter={() => playHover()}
+              className="absolute -top-14 left-0 px-4 py-2 bg-navy-900/40 border border-cyan-500/20 rounded-lg text-[10px] font-orbitron text-cyan-400 hover:text-white hover:border-cyan-400 uppercase tracking-[0.3em] transition-all flex items-center gap-3 backdrop-blur-sm group z-10"
+            >
+              <span className="text-sm group-hover:-translate-x-1 transition-transform">←</span> Return to HQ
+            </button>
+            <div className="glass-card-strong p-10 text-center w-full relative">
+              <div className="text-6xl mb-4">{humanWon ? '🏆' : '💀'}</div>
+              <h2 className={`font-orbitron text-4xl mb-2 ${humanWon ? 'text-neon-gold' : 'text-red-fire'}`}>
+                {humanWon ? 'VICTORY' : 'DEFEATED'}
+              </h2>
+              <p className="text-gray-400 text-sm mb-8">
+                {humanWon
+                  ? 'The enemy fleet has been neutralized. Admiral, your strategy was flawless.'
+                  : 'Your fleet has been annihilated. The enemy claims dominance over these waters.'}
+              </p>
 
-            <div className="grid grid-cols-2 gap-4 mb-8">
-              <div className="hud-stat">
-                <div className="hud-stat-label">Ships Sunk</div>
-                <div className="hud-stat-value">
-                  {humanWon ? SHIP_TYPES.length : gameState.aiShips.filter(s => s.sunk).length}
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                <div className="hud-stat">
+                  <div className="hud-stat-label">Ships Sunk</div>
+                  <div className="hud-stat-value">
+                    {humanWon ? SHIP_TYPES.length : gameState.aiShips.filter(s => s.sunk).length}
+                  </div>
+                </div>
+                <div className="hud-stat">
+                  <div className="hud-stat-label">Rank</div>
+                  <div className="hud-stat-value text-xs uppercase pt-2">
+                    {humanWon ? 'Grand Admiral' : 'Seaman Recruit'}
+                  </div>
                 </div>
               </div>
-              <div className="hud-stat">
-                <div className="hud-stat-label">Rank</div>
-                <div className="hud-stat-value text-xs uppercase pt-2">
-                  {humanWon ? 'Grand Admiral' : 'Seaman Recruit'}
-                </div>
-              </div>
-            </div>
 
-            <div className="space-y-4">
-              <button onClick={handlePlayAgain} className="btn-gold w-full py-4">New Mission</button>
-              <button
-                onClick={() => setPhase('leaderboard')}
-                className="btn-secondary w-full"
-              >
-                View Global Rankings
-              </button>
+              <div className="space-y-4">
+                <button onClick={handlePlayAgain} className="btn-gold w-full py-4">New Mission</button>
+                <button
+                  onClick={() => { setPhase('leaderboard'); playBtn(); }}
+                  onMouseEnter={() => playHover()}
+                  className="btn-secondary w-full"
+                >
+                  View Global Rankings
+                </button>
+              </div>
             </div>
           </div>
         </div>

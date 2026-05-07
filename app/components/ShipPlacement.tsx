@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { SHIP_TYPES, ShipType } from '../types/game';
 import { useGame } from '../context/GameContext';
+import { useSound } from '../context/SoundContext';
 import BoardDisplay from './BoardDisplay';
 
 interface ShipPlacementProps {
@@ -10,6 +11,7 @@ interface ShipPlacementProps {
 
 const ShipPlacement: React.FC<ShipPlacementProps> = ({ onComplete, onBack }) => {
   const { gameState, placeShip, autoPlaceShips, resetGame } = useGame();
+  const { playPlace, playBtn, playHover } = useSound();
   const [currentShipIndex, setCurrentShipIndex] = useState(0);
   const [orientation, setOrientation] = useState<'horizontal' | 'vertical'>('horizontal');
 
@@ -19,13 +21,17 @@ const ShipPlacement: React.FC<ShipPlacementProps> = ({ onComplete, onBack }) => 
   const handleCellClick = (x: number, y: number) => {
     if (allPlaced) return;
     const success = placeShip(x, y, currentShipType.id, orientation);
-    if (success && currentShipIndex < SHIP_TYPES.length - 1) {
-      setCurrentShipIndex(prev => prev + 1);
+    if (success) {
+      playPlace();
+      if (currentShipIndex < SHIP_TYPES.length - 1) {
+        setCurrentShipIndex(prev => prev + 1);
+      }
     }
   };
 
   const handleAutoPlace = () => {
     autoPlaceShips(true);
+    playPlace();
     setCurrentShipIndex(SHIP_TYPES.length - 1);
   };
 
@@ -39,7 +45,8 @@ const ShipPlacement: React.FC<ShipPlacementProps> = ({ onComplete, onBack }) => 
         <div className="glass-card p-10 slide-up">
           <div className="mb-12 relative">
             <button 
-              onClick={onBack}
+              onClick={() => { onBack(); playBtn(); }}
+              onMouseEnter={playHover}
               className="absolute -top-14 left-0 px-4 py-2 bg-navy-900/40 border border-cyan-500/20 rounded-lg text-[10px] font-orbitron text-cyan-400 hover:text-white hover:border-cyan-400 uppercase tracking-[0.3em] transition-all flex items-center gap-3 group backdrop-blur-sm"
             >
               <span className="text-sm group-hover:-translate-x-1 transition-transform">←</span> Return to Menu

@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   description: "Experience the ultimate naval combat simulator. Compete globally, analyze strategies with AI, and dominate the seas.",
 };
 
+import CinematicEffects from "./components/CinematicEffects";
+import { SoundProvider } from "./context/SoundContext";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,7 +29,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${orbitron.variable} ${inter.variable} h-full`}>
       <body className="min-h-full flex flex-col overflow-x-hidden bg-[#0a1628]">
-        <GameProvider>{children}</GameProvider>
+        <SoundProvider>
+          <GameProvider>
+            <CinematicEffects />
+            {children}
+          </GameProvider>
+        </SoundProvider>
       </body>
     </html>
   );

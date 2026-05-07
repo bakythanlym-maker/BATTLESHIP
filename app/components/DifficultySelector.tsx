@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AIDifficulty, GameMode } from '../types/game';
 import { useGame } from '../context/GameContext';
+import { useSound } from '../context/SoundContext';
 
 interface DifficultySelectorProps {
   onSelect: (difficulty: AIDifficulty, mode: GameMode) => void;
@@ -12,6 +13,7 @@ interface DifficultySelectorProps {
 const DifficultySelector: React.FC<DifficultySelectorProps> = ({ onSelect, onOpenLeaderboard, onOpenMultiplayer, onOpenPro }) => {
   const [selectedMode, setSelectedMode] = useState<GameMode>('classic');
   const { playerName, setPlayerName, playerCity, setPlayerCity } = useGame();
+  const { playBtn, playHover } = useSound();
 
   const difficulties: { id: AIDifficulty; label: string; desc: string; icon: string }[] = [
     { id: 'easy', label: 'Recruit', desc: 'Enemy fleet is scattered and predictable.', icon: '⚓' },
@@ -90,7 +92,8 @@ const DifficultySelector: React.FC<DifficultySelectorProps> = ({ onSelect, onOpe
                 {modes.map(m => (
                   <button
                     key={m.id}
-                    onClick={() => setSelectedMode(m.id)}
+                    onClick={() => { setSelectedMode(m.id); playBtn(); }}
+                    onMouseEnter={playHover}
                     className={`w-full text-left p-6 rounded-lg border-2 transition-all relative overflow-hidden group ${selectedMode === m.id
                         ? 'bg-cyan-500/10 border-cyan-500 text-white shadow-[0_0_30px_rgba(0,212,255,0.15)]'
                         : 'bg-navy-950/40 border-navy-800 text-gray-500 hover:border-navy-600'
@@ -113,7 +116,8 @@ const DifficultySelector: React.FC<DifficultySelectorProps> = ({ onSelect, onOpe
                 </div>
 
                 <button
-                  onClick={onOpenMultiplayer}
+                  onClick={() => { onOpenMultiplayer(); playBtn(); }}
+                  onMouseEnter={playHover}
                   className="w-full text-left p-6 rounded-lg border-2 border-gold/30 bg-gold/5 text-gold hover:bg-gold/10 transition-all group"
                 >
                   <div className="text-sm font-bold mb-1">Multiplayer PvP</div>
@@ -139,7 +143,8 @@ const DifficultySelector: React.FC<DifficultySelectorProps> = ({ onSelect, onOpe
               {difficulties.map((diff, i) => (
                 <div
                   key={diff.id}
-                  onClick={() => onSelect(diff.id, selectedMode)}
+                  onClick={() => { onSelect(diff.id, selectedMode); playBtn(); }}
+                  onMouseEnter={playHover}
                   className={`diff-card ${diff.id} group flex flex-col items-center justify-center min-h-[180px] lg:min-h-[360px] relative p-6`}
                 >
                   <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -182,7 +187,8 @@ const DifficultySelector: React.FC<DifficultySelectorProps> = ({ onSelect, onOpe
 
               <div className="relative z-10">
                 <button
-                  onClick={onOpenPro}
+                  onClick={() => { onOpenPro(); playBtn(); }}
+                  onMouseEnter={playHover}
                   className="btn-gold btn-shine whitespace-nowrap px-10 py-4 text-sm rounded-full shadow-[0_0_40px_rgba(240,180,41,0.3)] hover:shadow-[0_0_60px_rgba(240,180,41,0.5)] transition-all animate-pulse-slow font-black"
                 >
                   ⚡ ASCEND NOW

@@ -3,15 +3,33 @@ import { useGame } from '../context/GameContext';
 import BoardDisplay from './BoardDisplay';
 import GameTimer from './GameTimer';
 import AICoach from './AICoach';
+import { useSound } from '../context/SoundContext';
 import { SHIP_TYPES } from '../types/game';
 
-const GameBoard: React.FC = () => {
+interface GameBoardProps {
+  onAbort: () => void;
+}
+
+const GameBoard: React.FC<GameBoardProps> = ({ onAbort }) => {
   const { gameState, makeShot, analysis, playerName } = useGame();
+  const { playBtn, playHover, playFire, playHit, playMiss, playSunk } = useSound();
+  const [isShaking, setIsShaking] = useState(false);
   const logRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (logRef.current) {
       logRef.current.scrollTop = logRef.current.scrollHeight;
+    }
+
+    const lastMove = gameState.moveHistory[gameState.moveHistory.length - 1];
+    if (lastMove) {
+      if (lastMove.hit) {
+        if (lastMove.sunkShipId) {
+          playSunk();
+        }
+        setIsShaking(true);
+        setTimeout(() => setIsShaking(false), 500);
+      }
     }
   }, [gameState.moveHistory]);
 
@@ -22,7 +40,7 @@ const GameBoard: React.FC = () => {
   const humanAccuracy = humanMoves.length > 0 ? Math.round((humanHits / humanMoves.length) * 100) : 0;
 
   return (
-    <div className="relative min-h-screen p-4 md:p-8 flex flex-col">
+    <div className={`relative min-h-screen p-4 md:p-8 flex flex-col transition-transform ${isShaking ? 'shake' : ''}`}>
       <div className="ocean-bg" />
       <div className="ocean-bg grid-lines" style={{ opacity: 0.2 }} />
 
@@ -83,7 +101,19 @@ const GameBoard: React.FC = () => {
         </div>
 
         {/* Center: Combat Log & Intel */}
-        <div className="flex flex-col gap-6 h-full max-h-[400px] lg:max-h-[600px] order-2">
+        <div className="flex flex-col gap-6 h-full max-h-[400px] lg:max-h-[600px] order-2 relative">
+          <button
+            onClick={() => { onAbort(); playBtn(); }}
+            onMouseEnter={() => playHover()}
+            className={`absolute -top-16 left-0 z-[100] px-4 py-2 border rounded-lg text-[10px] font-orbitron uppercase tracking-[0.3em] transition-all flex items-center gap-3 backdrop-blur-sm group ${
+              gameState.status === 'finished' 
+                ? 'bg-navy-900/80 border-cyan-500/40 text-cyan-400 hover:text-white hover:border-cyan-400' 
+                : 'bg-navy-900/60 border-red-500/20 text-gray-400 hover:text-red-400 hover:border-red-500/50'
+            }`}
+          >
+            <span className="text-sm group-hover:-translate-x-1 transition-transform">←</span> 
+            {gameState.status === 'finished' ? 'Return to HQ' : 'Abort Mission'}
+          </button>
           <div className="glass-card p-6 flex-grow flex flex-col border-navy-700 bg-navy-900/40">
             <h4 className="font-orbitron text-[10px] text-gray-500 uppercase mb-4 tracking-widest border-b border-navy-700 pb-2">Combat Log</h4>
             <div ref={logRef} className="flex-grow overflow-y-auto space-y-2 pr-2 custom-scrollbar">
@@ -123,7 +153,10 @@ const GameBoard: React.FC = () => {
             <div className="min-w-[320px] md:min-w-0">
               <BoardDisplay 
                 board={gameState.aiBoard} 
-                onCellClick={(x, y) => makeShot(x, y)}
+                onCellClick={(x, y) => {
+                  playBtn();
+                  makeShot(x, y);
+                }}
                 showShips={false}
                 title="Enemy Sector"
                 isTurn={gameState.turn === 'human'}
