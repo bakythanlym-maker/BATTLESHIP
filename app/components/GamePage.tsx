@@ -98,7 +98,7 @@ const GamePage: React.FC = () => {
       {gameState.status === 'finished' && (
         <>
           {/* Emergency Top Return Button */}
-          <div className="fixed top-80 left-1/2 -translate-x-1/2 z-[10000] animate-bounce">
+          <div className="fixed top-70 left-1/2 -translate-x-1/2 z-[10000] animate-bounce">
             <button
               onClick={() => { resetGame(); setPhase('difficulty'); playBtn(); }}
               onMouseEnter={() => playHover()}
