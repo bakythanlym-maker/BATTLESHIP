@@ -34,9 +34,9 @@ const DifficultySelector: React.FC<DifficultySelectorProps> = ({ onSelect, onOpe
 
       <div className="max-w-7xl w-full relative z-10">
         {/* Header Section */}
-        <div className="text-center mb-24 lg:mb-64 slide-up">
+        <div className="text-center mb-12 lg:mb-32 slide-up">
           <div className="inline-block relative">
-            <h1 className="font-orbitron text-4xl md:text-7xl lg:text-9xl font-black text-neon-cyan mb-4 lg:mb-8 tracking-tighter relative z-10">
+            <h1 className="font-orbitron text-3xl md:text-7xl lg:text-9xl font-black text-neon-cyan mb-2 lg:mb-8 tracking-tighter relative z-10">
               BATTLESHIP
             </h1>
             <div className="absolute -inset-4 bg-cyan-500/5 blur-3xl rounded-full z-0" />
@@ -133,22 +133,22 @@ const DifficultySelector: React.FC<DifficultySelectorProps> = ({ onSelect, onOpe
           </div>
 
           {/* Right Section: Tactical Deployment */}
-          <div className="flex flex-col gap-16 slide-up" style={{ animationDelay: '0.2s' }}>
+          <div className="flex flex-col gap-8 lg:gap-16 slide-up" style={{ animationDelay: '0.2s' }}>
             {/* Difficulty Selection */}
             <div className="grid md:grid-cols-3 gap-8">
               {difficulties.map((diff, i) => (
                 <div
                   key={diff.id}
                   onClick={() => onSelect(diff.id, selectedMode)}
-                  className={`diff-card ${diff.id} group flex flex-col items-center justify-center min-h-[360px] relative`}
+                  className={`diff-card ${diff.id} group flex flex-col items-center justify-center min-h-[180px] lg:min-h-[360px] relative p-6`}
                 >
                   <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className="text-6xl mb-10 group-hover:scale-125 group-hover:-translate-y-2 transition-all duration-500 drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">{diff.icon}</div>
+                  <div className="text-4xl lg:text-6xl mb-4 lg:mb-10 group-hover:scale-110 lg:group-hover:scale-125 group-hover:-translate-y-1 lg:group-hover:-translate-y-2 transition-all duration-500 drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">{diff.icon}</div>
                   <h3 className="font-orbitron text-2xl text-white mb-4 tracking-tight">{diff.label}</h3>
                   <p className="text-[11px] text-gray-400 leading-relaxed text-center px-4 max-w-[200px]">
                     {diff.desc}
                   </p>
-                  <div className="mt-12 w-12 h-[2px] bg-white/10 group-hover:w-24 group-hover:bg-neon-cyan transition-all duration-500" />
+                  <div className="mt-4 lg:mt-12 w-8 lg:w-12 h-[2px] bg-white/10 group-hover:w-16 lg:group-hover:w-24 group-hover:bg-neon-cyan transition-all duration-500" />
 
                   <div className="absolute bottom-10 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
                     <span className="text-[9px] font-orbitron text-neon-cyan uppercase tracking-[0.3em]">Engage Target →</span>
@@ -158,7 +158,7 @@ const DifficultySelector: React.FC<DifficultySelectorProps> = ({ onSelect, onOpe
             </div>
 
             {/* Premium Call to Action: The Ultimate Hook */}
-            <div className="glass-card border-beam upgrade-hook float-anim p-8 flex flex-col lg:flex-row items-center justify-between gap-8 relative overflow-hidden bg-gradient-to-r from-navy-900/80 to-gold/5 border-gold/20 shadow-[0_0_50px_rgba(240,180,41,0.1)] group">
+            <div className="glass-card border-beam upgrade-hook float-anim p-6 lg:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-8 relative overflow-hidden bg-gradient-to-r from-navy-900/80 to-gold/5 border-gold/20 shadow-[0_0_50px_rgba(240,180,41,0.1)] group">
               <div className="scanning-line !opacity-20 !bg-gold" />
               <div className="absolute -top-6 -left-6 w-16 h-16 bg-gold blur-[30px] opacity-20 animate-pulse" />
               <div className="absolute -bottom-6 -right-6 w-20 h-20 bg-gold blur-[40px] opacity-20 animate-pulse" />

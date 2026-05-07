@@ -8,6 +8,8 @@ import GameBoard from './GameBoard';
 import Leaderboard from './Leaderboard';
 import MultiplayerLobby from './MultiplayerLobby';
 import ProUpgradeModal from './ProUpgradeModal';
+import OrientationPrompt from './OrientationPrompt';
+import { GameProvider } from '../context/GameContext';
 import { AIDifficulty, GameMode, SHIP_TYPES } from '../types/game';
 
 type Phase = 'difficulty' | 'placement' | 'playing' | 'leaderboard' | 'multiplayer_lobby';
@@ -76,13 +78,15 @@ const GamePage: React.FC = () => {
         {phase === 'leaderboard' && (
           <div className="min-h-screen flex items-center justify-center p-6 bg-navy-950/40">
             <div className="w-full max-w-4xl">
-              <Leaderboard />
-              <button
-                onClick={() => setPhase('difficulty')}
-                className="mt-8 mx-auto block text-xs font-orbitron text-gray-500 hover:text-neon-cyan uppercase tracking-widest transition-colors"
-              >
-                ← Return to Headquarters
-              </button>
+              <div className="relative">
+                <button
+                  onClick={() => setPhase('difficulty')}
+                  className="absolute -top-14 left-0 px-4 py-2 bg-navy-900/40 border border-cyan-500/20 rounded-lg text-[10px] font-orbitron text-cyan-400 hover:text-white hover:border-cyan-400 uppercase tracking-[0.3em] transition-all flex items-center gap-3 backdrop-blur-sm"
+                >
+                  ← Return to Headquarters
+                </button>
+                <Leaderboard />
+              </div>
             </div>
           </div>
         )}
@@ -135,6 +139,9 @@ const GamePage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Orientation Guide for Mobile */}
+      <OrientationPrompt />
 
       {/* Pro Modal */}
       <ProUpgradeModal

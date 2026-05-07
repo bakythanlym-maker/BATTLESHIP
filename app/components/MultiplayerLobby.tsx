@@ -77,8 +77,11 @@ const MultiplayerLobby: React.FC<MultiplayerLobbyProps> = ({ onBack }) => {
         </div>
       )}
 
-      <button onClick={onBack} className="mt-8 text-xs text-gray-600 hover:text-gray-400 font-orbitron uppercase tracking-widest">
-        Return to HQ
+      <button 
+        onClick={onBack} 
+        className="absolute -top-14 left-0 px-4 py-2 bg-navy-900/40 border border-cyan-500/20 rounded-lg text-[10px] font-orbitron text-cyan-400 hover:text-white hover:border-cyan-400 uppercase tracking-[0.3em] transition-all flex items-center gap-3 backdrop-blur-sm"
+      >
+        ← Return to HQ
       </button>
     </div>
   );

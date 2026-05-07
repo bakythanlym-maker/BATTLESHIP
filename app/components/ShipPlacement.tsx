@@ -40,7 +40,7 @@ const ShipPlacement: React.FC<ShipPlacementProps> = ({ onComplete, onBack }) => 
           <div className="mb-12 relative">
             <button 
               onClick={onBack}
-              className="absolute -top-16 -left-4 px-4 py-2 bg-navy-900/40 border border-cyan-500/20 rounded-lg text-[10px] font-orbitron text-cyan-400 hover:text-white hover:border-cyan-400 uppercase tracking-[0.3em] transition-all flex items-center gap-3 group backdrop-blur-sm"
+              className="absolute -top-14 left-0 px-4 py-2 bg-navy-900/40 border border-cyan-500/20 rounded-lg text-[10px] font-orbitron text-cyan-400 hover:text-white hover:border-cyan-400 uppercase tracking-[0.3em] transition-all flex items-center gap-3 group backdrop-blur-sm"
             >
               <span className="text-sm group-hover:-translate-x-1 transition-transform">←</span> Return to Menu
             </button>
